@@ -9,6 +9,11 @@ class SocialNetwork {
 
   addUser(name) {
     // Your code here 
+    this.currentID++;
+    let user = {'id': this.currentID, 'name': name };
+    this.follows[`${this.currentID}`] = new Set();
+    this.users[`${this.currentID}`] = user;
+    return this.currentID
   }
 
   getUser(userID) {
@@ -33,3 +38,13 @@ class SocialNetwork {
 }
 
 module.exports = SocialNetwork;
+
+let socialNetwork = new SocialNetwork();
+
+console.log(Object.keys(socialNetwork.users).length)//.to.equal(0);
+
+console.log(socialNetwork.addUser("User 1"))//.to.equal(1);
+
+console.log(Object.keys(socialNetwork.users).length)//.to.equal(1);
+
+console.log(socialNetwork.users['1'])//.to.deep.equal({ id: 1, name: 'User 1' });
