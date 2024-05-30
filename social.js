@@ -24,6 +24,12 @@ class SocialNetwork {
 
   follow(userID1, userID2) {
     // Your code here 
+    
+    if (this.users[userID1] && this.users[userID2]) {
+      this.follows[userID1].add(userID2);
+      return true;
+    }
+    return false;
   }
 
   getFollows(userID) {
@@ -43,10 +49,12 @@ module.exports = SocialNetwork;
 
 let socialNetwork = new SocialNetwork();
 
-console.log(Object.keys(socialNetwork.users).length)//.to.equal(0);
+userID1 = socialNetwork.addUser("User 1");
+userID2 = socialNetwork.addUser("User 2");
 
-console.log(socialNetwork.addUser("User 1"))//.to.equal(1);
+console.log(socialNetwork.follows[userID1].size)//.to.equal(0);
 
-console.log(Object.keys(socialNetwork.users).length)//.to.equal(1);
+console.log(socialNetwork.follow(userID1, userID2))//.to.be.true;
 
-console.log(socialNetwork.users['1'])//.to.deep.equal({ id: 1, name: 'User 1' });
+console.log(socialNetwork.follows[userID1].size)//.to.equal(1);
+console.log(socialNetwork.follows[userID1])//.to.have.keys([2]);
