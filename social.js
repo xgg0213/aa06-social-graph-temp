@@ -51,7 +51,29 @@ class SocialNetwork {
 
   getRecommendedFollows(userID, degrees) {
     // Your code here 
-    
+    let queue = [[userID]];
+    let visited = new Set([userID]);
+    let recommended = new Set();
+
+    while (queue.length) {
+      let currentPath = queue.shift()
+      let lastNode = currentPath[currentPath.length-1];
+
+      if (currentPath.length -2 <= degrees && currentPath.length > 2) {
+        for (let i = 2; i <currentPath.length; i++) {
+          recommended.add(currentPath[i]);
+        }
+      }
+
+      for (let follow of this.follows[lastNode]) {
+        if (!visited.has(follow)) {
+          visited.add(follow);
+          queue.push(currentPath.concat([follow]));
+        }
+      }
+    }
+    const array = Array.from(recommended)
+    return array;
   }
 }
 
@@ -61,10 +83,19 @@ let socialNetwork = new SocialNetwork();
 
 userID1 = socialNetwork.addUser("User 1");
 userID2 = socialNetwork.addUser("User 2");
+userID3 = socialNetwork.addUser("User 3");
+userID4 = socialNetwork.addUser("User 4");
+userID5 = socialNetwork.addUser("User 5");
+userID6 = socialNetwork.addUser("User 6");
 
-console.log(socialNetwork.follows[userID1].size)//.to.equal(0);
+socialNetwork.follow(1, 2);
+socialNetwork.follow(2, 3);
+socialNetwork.follow(3, 4);
+socialNetwork.follow(3, 5);
+socialNetwork.follow(4, 1);
+socialNetwork.follow(4, 2);
+socialNetwork.follow(5, 6);
 
-console.log(socialNetwork.follow(userID1, userID2))//.to.be.true;
-
-console.log(socialNetwork.follows[userID1].size)//.to.equal(1);
-console.log(socialNetwork.follows[userID1])//.to.have.keys([2]);
+console.log(socialNetwork.getRecommendedFollows(1, 1))//.to.have.members([3]);
+console.log(socialNetwork.getRecommendedFollows(1, 2))//.to.have.members([3, 4, 5]);
+console.log(socialNetwork.getRecommendedFollows(1, 3))//.to.have.members([3, 4, 5, 6]);
