@@ -72,7 +72,7 @@ class SocialNetwork {
         }
       }
     }
-    const array = Array.from(recommended)
+    const array = Array.from(recommended) // the order of a set is random, and the array will keep the order as it is when created
     return array;
   }
 }
